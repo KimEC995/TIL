@@ -3,12 +3,12 @@
 > 20230630 멀티 캠퍼스 데이터 엔지니어링 교육 내용
 >
 > Colaboration Lab 을 활용
-> > 20230630 수강
+> > 20230630 수강 <br>
 > > 20230712 작성시작
 
 
 
-##### Python Data Type and Operations
+## Python Data Type and Operations
 
  - 시작하기 전 기타 경고 문장을 무시하는 코드 작성
 
@@ -21,12 +21,11 @@
    ```
 
 
-
-### Python Function
-
+## Python Function
 
 
-#### 1) 함수 실행
+
+### 1) 함수 실행
 
 - **print() 실행**
 
@@ -59,9 +58,9 @@ help(print)
 
 > 내장 매뉴얼은 Python에서 기본 제공하는 매뉴얼로, 따로 패키지나 클래스를 인스톨하지 않아도 확인이 가능함.
 
+<br>
 
-
-#### 2) 객체(Object) 선언
+### 2) 객체(Object) 선언
 
 > 파이썬 식별자(Identifiers)는 객체, 함수, 클래스, 모듈 또는 다른 개체 식별에 사용되는 이름.
 
@@ -107,11 +106,11 @@ keyword.kwlist
 
 
 
-### Python Data Type
+## Python Data Type
 
 
 
-#### 1. Numeric
+### 1. Numeric
 
 > 숫자, 수 등의 의미를 지님
 
@@ -179,7 +178,7 @@ print(type(0b1001))
 >
 > <class 'int'>
 
-
+<br>
 
 - 실수
 
@@ -194,7 +193,7 @@ print(type(3.14))
 >
 > <class 'float'>
 
-
+<br>
 
 - 과학적 표기법
 
@@ -220,7 +219,7 @@ print(type(5e+4))
 >
 > <class 'float'>
 
-
+<br>
 
 - 복소수(Complex)
 
@@ -239,9 +238,9 @@ print(type(8 + 9j))
 >
 > <class 'complex'>
 
+<br>
 
-
-#### 2. String
+### 2. String
 
 ```py
 print('A')
@@ -265,9 +264,11 @@ print(type('Data Analytics'))
 >
 > <class 'str'>
 
+<br>
 
+### 3. Logical
 
-#### 3. Logical
+<br>
 
 - 참
 
@@ -282,6 +283,8 @@ print(type(True))
 >
 > <class 'bool'>
 
+<br>
+
 - 거짓
 
 ```python
@@ -295,11 +298,14 @@ print(type(False))
 >
 > <class 'bool'>
 
+<br>
 
+## 산술연산(Arithmetic Operation)
 
-### 산술연산(Arithmetic Operation)
+### 1. 사칙연산
+> 하단에서 보는 바와 같이 Python에서는 따로 명령어를 입력하지 않아도 간단한 사칙연산은 그냥 결과를 출력한다.
 
-#### 1. 사칙연산
+<br>
 
 - 덧셈
 
@@ -311,7 +317,7 @@ print(type(False))
 >
 > 17
 
-
+<br>
 
 - 뺄셈
 
@@ -323,7 +329,7 @@ print(type(False))
 >
 > -1
 
-
+<br>
 
 - 곱셈
 
@@ -335,26 +341,180 @@ print(type(False))
 >
 > 72
 
-
+<br>
 
 - 실수 나눗셈
+
+```python
+10 / 3
+```
+
+> result
+>
+> 3.3333333333333335
+> 17번째에서 올림.
+
+<br>
+
 - 나눗셈 후 몫 반환
+
+```python
+10 // 3
+```
+
+> result
+>
+> 3
+> 나눗셈 후 몫만 정수형으로 반환함.
+> 나머지는 몫 연산에 영향을 주지 않음.
+
+<br>
+
 - 나눗셈 후 나머지 반환
+
+```python
+10 % 3
+```
+
+> result
+>
+> 1
+> 10에서 3을 나누고 남은 1만 반환.
+> 10 / 3 의 나머지 0.333... 가 아님을 유의할것.
+
+<br>
+
 - 제곱
 
+```python
+9 ** 3
+```
 
+> result
+>
+> 729
 
-#### 2. 절댓값
+```python
+pow(9 , 2)
+```
 
-#### 3. 진법 변환
+> result
+>
+> 81
+> pow(Power) 는 수학적으로 '거듭제곱' 을 의미한다.
 
-#### 4. 반올림
+<br>
 
+### 2. 절댓값
 
+```python
+abs(-3)
+```
+> result
+>
+> 3
+> abs(Absolute Value) 는 수학적으로 절댓값을 의미한다.
 
-### 비교연산(Comparison Operation)
+<br>
 
-#### 1. Numeric
+### 3. 진법 변환
+
+- 16진수로 변환
+
+```python
+hex(16)
+```
+
+> result
+>
+> 0x10
+> Hexdecimal Number 의 줄임말 (hex) 를 사용한다.
+
+- 8진수로 변환
+
+```python
+oct(8)
+```
+
+> result
+>
+> 0o10
+> Octal Number 의 줄임말 (oct)를 사용한다.
+
+- 2진수로 변환
+
+```python
+bin(9)
+```
+
+> result
+>
+> 0b1001
+> Binery Number 의 줄임말 (bin)을 사용한다.
+
+<br>
+
+### 4. 반올림
+
+- round(number, [digits])
+> digits: 생략 가능. 
+>
+>어느 자리 숫자 + 1 에서 반올림 할지 설정한다. 
+>
+>없으면 소숫점 첫 번째 자리에서 반올림.
+
+```python
+round(24.47)
+```
+
+> result :
+> 24
+
+```python
+round(24.57)
+```
+
+> result :
+> 25
+
+```python
+round(24.57 , 0)
+```
+
+> result :
+> 25.0
+
+```python
+round(24.57 , 1)
+```
+
+> result :
+> 24.6
+
+```python
+round(24.57 , -1)
+```
+
+> result :
+> 20.0
+
+```python
+round(25.47 , -1)
+```
+
+> result :
+> 30.0
+
+```python
+round(25.478 , 2)
+```
+
+> result :
+>25.48
+
+## 비교연산(Comparison Operation)
+
+### 1. Numeric
 
 
 

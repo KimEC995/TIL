@@ -9,6 +9,10 @@
 > > 20230707수강
 > >
 > > 20230717 작성 시작 초안
+> >
+> > 20230718 내용 보강
+> >
+> > 20230719 내용 보강
 
 <br>
 <br>
@@ -324,27 +328,262 @@ TD['embark_town'].fillna(method = 'ffill', inplace = True)
 
 ## 4. 그룹 연산
 
-> 하나의 데이터 프레임에서 Serise 를 기준으로 DF을 재구성.(?)
+> 하나의 데이터를 그룹화 하여 그룹 별 연산을 수행.
+
+
 
 ### 4-1) .groupby() - 하나의 열 기준
 
-### 4-2) .groupby() - 두 개 이상의 열 기준
+```python
+TD_G = TD.groupby(['class'])
+```
 
-### 4-3) .agg() - 함수 묶기
+> TD 데이터 셋의 열 'class' 를 기준으로 그룹화 한다.
+>
+> class에는 'First' , 'Second', 'Third' 의 3 가지 값이 있는데, 그것을 기준으로 하는 것.
+
+
+
+### 4-2) .get_group() - 키 그룹 정보 확인
+
+```python
+TD_G.get_group('First')
+```
+
+> 이미 그룹화 된 그룹의 키 정보를 확인한다.
+>
+> 이 경우 'First' 그룹에 속해있는 데이터 셋을 출력한다.
+
+
+
+### 4-3) for 문을 활용한 그룹 정보 확인
+
+```python
+for key in ['First', 'Second', 'Third']:
+    print(TD_G.get_group(key).head(3))
+    print('\n')
+```
+
+> 4-2의 `.get_group()` 를 3번 사용하기 번거로워 `for` 문을 활용하였다.
+
+
+
+### 4-4) 그룹 통계 연산
+
+```python
+TD_G.mean()
+```
+
+> mean 뿐만 아니라 연산 모두 사용 가능하다.
+
+
+
+### 4-5) .groupby() - 두개의 열 기준
+
+```python
+TD_G_02 = TD.groupby(['class', 'sex'])
+```
+
+> 두 줄 쓸 필요 없이 그냥 키를 두개 준다.
+>
+> 단, 각 각 다른 열 이어야함.
+
+
+
+- **하나 확인 - .get_group()**
+
+```python
+TD_G_02.get_group(['First', 'Female'])
+```
+
+
+
+- **여러개 확인 - for 문 활용**
+
+``` python
+for key, group in TD_G_02:
+    print('* key:' , key)
+    print('* number:', len(group))
+    print(group.head(3))
+    print('\n')
+```
+
+> result. 요약
+>
+> \* key : ('First', 'female') 
+>
+> \* number : 94
+>
+> First, female  3줄
+>
+> \* key : ('First', 'male') 
+>
+> \* number : 122
+>
+> First, male  3줄
+>
+> .
+>
+> .
+
+
+
+### 4-4) .agg() - 함수 묶기
 
 > Aggregation = 묶는다.
 >
-> 여러개의 **함수**를 groupby의 객체로 적용
+> **여러개의 함수**를 groupby의 객체로 적용
 
 
 
-### 4-4) .filter()
+- **.agg()**
+
+```py
+TD_G.agg(['std', 'mean'])
+```
+
+
+
+- **특정 열에만 적용**
+
+```python
+TD_G.age.agg(['min' , 'max'])
+```
+
+
+
+- **두 개의 열에 따로 적용**
+
+```python
+TD_G.agg({'age' : ['mean', 'std'], 'fare' : ['min', 'max']})
+```
+
+> 딕셔너리 `{}` 필수
+
+
+
+### 4-5) .filter()
 
 > 데이터 거르기
 >
-> `lambda` 를 활용한다.
+> 너무 길어져서 `lambda` 를 활용한다.
+
+
+
+- **.filter(lambda x : )**
+
+**1.**
+
+```python
+TD_G.filter(lambda x : len(x) >= 200).head()
+```
+
+> `lambda x : len(x) >= 200`
+>
+> 앞의 TD_G 의 그룹 들 중 데이터의 갯수가(len(x)) 200개 이상인 것들만 필터함
+>
+> 그룹 중 Second 는 184개의 데이터로 탈락한다.
+
+
+
+**2.**
+
+```python
+TD_G.filter(lambda x : x['age'].mean() < 30).head()
+```
+
+
+
+- **.apply()**
+
+```python
+TD_G.apply(len)
+```
+
+> **.apply()**
+>
+> `()` 안에 len 외에도 다양한 함수를 넣을 수 있다.
+>
+> 각 그룹 별로 연산을 적용한다.
+
+> **`.agg()` 와 `.apply()`** 의 차이
+>
+> `.agg()` 여러개의 함수를 **동시**에 적용. 주로 'mean', 'std' 구할때 씀
+>
+> `.apply()` 여러개의 함수를 **개별** 적용. 반드시 하나의 함수를 적용해야 함. 주로 'len' 을 씀
 
 
 
 ## 5. pivot_table()
+
+> pivot - 고정해서
+>
+> table - 테이블로 재구성
+>
+> -> 하나의 원본 데이터 프레임을 쪼개고 재구성한다.
+
+
+
+### 5-2) pivot_table() 구성 요소
+
+- **Index**
+- **columns**
+- **values**
+- **aggfunc** : Aggregation Function -> 적용 함수
+
+```python
+TD_1 = pd.pivot_table(TD,
+                   index = 'class',
+                   columns = 'sex',
+                   values = 'age',
+                   aggfunc = 'mean'
+                   )
+```
+
+> 원본 데이터 프레임 TD에서 필요한 정보만 모인 테이블을 재구성
+>
+> 원래 열이었던 'class' 를 행으로 만들어
+>
+> 각 등급 별 남성과 여성의 나이 평균으로 이루어진 테이블이 된다.
+
+
+
+### 5-3) 두 개의 적용 함수
+
+```python
+TD_2 = pd.pivot_table(TD,
+                      index = 'class',
+                      columns = 'sex',
+                      values = 'age',
+                      aggfunc = ['mean', 'sum']
+                     )
+```
+
+> 적용 함수 'mean' 과 'sum' 두 가지로 만들었다.
+>
+> 다중컬럼으로 출력됨.
+
+
+
+### 5-4) 다중 인덱스, 다중 데이터, 다중 함수
+
+```python
+TD_3 = pd.pivot_table(TD,
+                     index = ['class', 'sex'],
+                     columns = 'survived',
+                     values = ['age', 'fare'],
+                     aggfunc = {'age' : ['mean', 'std']
+                               'fare' : ['max', 'min']}
+                     )
+```
+
+> 객실 등급별 성별로 나뉘는 다중 인덱스
+>
+> 두 종류의 값이 들어가는 다중 데이터
+>
+> 각 값마다 다르게 적용되는 다중 함수까지 모였다.
+>
+> 주의점은 `index`, `columns`, `values` 를 여러 개 작성할 땐 `[]` (리스트)로 묶고
+>
+> `aggfunc` 를 묶을 땐 `{}` (딕셔너리)를 사용한다. -> 함수니까 
 

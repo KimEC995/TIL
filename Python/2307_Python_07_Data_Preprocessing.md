@@ -272,6 +272,12 @@ TD['embark_town'].fillna(most_freq, inplace = True)
     - `ffill` = front + fill
     - `bfill` = backword + fill
 
+```python
+TD['embark_town'].fillna(method = 'ffill', inplace = True)
+```
+
+
+
 
 
 ## 2. Filtering

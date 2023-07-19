@@ -1,4 +1,4 @@
-# Python_NumPy 기초 06
+# Python_Pandas 기초 06
 
 > 20230703 멀티 캠퍼스 데이터 엔지니어링 교육. 왕기초
 >
@@ -14,7 +14,8 @@
 ## Pandas(Python Data Analysis Library)
 
 > - 글자 + 숫자 형태의 행렬을 읽기 쉽게 처리함
-> - 
+>
+>   
 
 [Pandas 홈페이지][https://pandas.pydata.org]
 
@@ -231,5 +232,4 @@ DF1.describe()
 
 
 ### 3-6) 파이 그래프
-
 

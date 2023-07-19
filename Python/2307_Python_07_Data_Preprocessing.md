@@ -1,4 +1,4 @@
-# Python_NumPy 기초 07
+# Python_데이터 전처리 기초 07
 
 > 20230707 멀티 캠퍼스 데이터 엔지니어링 교육. 왕기초
 >
@@ -55,9 +55,37 @@
 
 ### 1-1) 데이터 셋 불러오기
 
+> 예제를 위해 샘플 데이터 셋을 불러온다.
+>
+> 이 경우 Seaborn에 내장된 'titanic' 데이터 셋을 활용한다.
+
+```python
+import seaborn as sns
+TD = sns.load_dataset('titanic')
+```
+
+. seaborn 은 주로 sns로 줄인다.
+
+- 데이터 셋 확인
+
+```python
+TD.info()
+```
+
+
+
 ### 1-2) 결측치 확인
 
 - 특정 열(Column) 에서 **결측치 확인**
+
+```python
+TD.head(10)
+```
+
+> 5번 행 'age' 열 결측치 존재
+
+
+
 - **.value_counts(dropna = False)**
 
 > dropna = drop nan = 결측치를 빼고 셀까요?
@@ -65,6 +93,14 @@
 > True = 결측치 빼고 세줘
 >
 > False = 결측치 포함 세줘
+
+```python
+TD['deck'].value_count(dropna = False)
+```
+
+> 데이터 셋 'deck' 열 결측치 688개 존재.
+>
+> 891개 값 중 688개가 결측치..
 
 
 
@@ -78,15 +114,18 @@
 >
 > False = 결측치 X
 
+```python
+TD.head(10).isnull()
+```
 
+> 맨 위 10줄 중 결측치로 인식되는 것은 True 로 출력
 
-- **.isnull()** 활용
 
 
 
 - **.isnull().sum(axis = 0/1)**
 
-> axis = 0 - Index
+> axis = 0 = 의미-Index = 연산-Index를 기준으로 Column 을 계산한다.
 >
 > axis = 1 - Column
 
@@ -109,6 +148,10 @@ TD.isnull().sum(axis = 0)
 > True = 결측치 X
 >
 > False = 결측치 O
+
+```python
+TD.notnull()
+```
 
 
 
@@ -177,6 +220,57 @@ TD.dropna(subset = ['age'], how = 'any', axis = 0).shape
 ### 1-4) 결측치 치환
 
 > 결측치의 갯수가 결과에 영향을 미칠 정도로 많다면 기존의 Volum 값으로 치환한다.
+
+
+
+- **연속형 데이터 치환**
+  - **평균값으로 치환**
+
+```python
+TD['age'].fillna(int(TD['age'].mean(axis = 0)), inplace = True)
+```
+
+>**fillna**
+>
+>fill + na
+>
+>결측치를 뒤에 오는 값으로 채운다.
+
+> `int(TD['age'].mean(axis = 0))`
+>
+> age 열의 평균을 낸다.
+
+> **inplace = True / False**
+>
+> 값을 대체한다, 안한다.
+
+> **코드해석**
+>
+> 데이터 프레임 TD 의 'age' 열들의 결측치를 'age' 열의 평균으로 대체한다.
+
+
+
+- **명목형 데이터 치환**
+  - **최빈값으로 치환**
+
+```python
+most_freq = TD['embark_town'].value_count(dropna = True).idxmax()
+
+TD['embark_town'].fillna(most_freq, inplace = True)
+```
+
+> **.idxmax()**
+>
+> 명목형에서 제일 빈도가 높은 것을 출력.
+>
+> `.value_count()` 와 함께 사용
+
+
+
+- **결측치 치환**
+  - **앞, 뒤의 데이터 포인트로 치환**
+    - `ffill` = front + fill
+    - `bfill` = backword + fill
 
 
 

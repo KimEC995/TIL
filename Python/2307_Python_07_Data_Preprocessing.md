@@ -199,13 +199,13 @@ TD.dropna(subset = ['age'], how = 'any', axis = 0).shape
 >
 > 행(Index) 중에서 'x' 행에 결측치가 있는지 확인.
 >
-> 위 코드에서는 각 행들(Index = 891) 에서 열(columns = 15) 'age' 에 na 가 있는지 확인하는것
+> 위 코드에서는 각 행들(Index = 891) 에서 열(columns = 15) 'age' 에 na 가 있는지 확인하는 것
 
 >  **how**
 >
 > any = 결측치가 존재만 한다면
 >
-> all = 'age' 외에도 모두 결측치라면
+> all = 'age' 외에도 모두 결측치 라면
 
 > **설명**
 >
@@ -281,19 +281,45 @@ TD['embark_town'].fillna(method = 'ffill', inplace = True)
 > 주로 Index 단위로 이루어짐.
 
 
+### 2-1) 하나의 Index에서 범위 지정(and)
 
-### 2-1) 데이터 셋 불러오기
+```python
+Filter_1 = (TD.age >= 10) & (TD.age < 20)
 
-### 2-2) 하나의 Index에서 범위 지정(이상 그리고 미만)
+TD.loc[Filter_1, :].head()
+```
 
-### 2-3) 하나의 Index에서 범위 지정(미만 또는 이상)
+> `&` == 'and'
+> 두 조건을 모두 충족해야 한다.
 
-### 2-4) 두 개 이상의 Index에서 범위 지정
+<br>
 
-### 2-5) 특정 수를 포함
+### 2-2) 하나의 Index에서 범위 지정(or)
+```python
+Filter_2 = (TD.age < 10) | (TD.age >= 60)
 
+TD.loc[Filter_2, :].head()
+```
+> `|` == or
+>두 조건 중 하나만 참을 만족해도 출력한다. 
 
+<br>
+### 2-3) 두 개 이상의 Index에서 범위 지정(and)
+```python
+Filter_3 = (TD.age < 10) & (TD.sex == 'Female')
 
+TD.loc[Filter_3, :].head()
+```
+> 조건을 다르게 사용하면 됨
+<br>
+### 2-4) 특정 수를 포함
+```python
+Filter_4 = (TD.sibsp == 3) | (TD.sibsp == 4) | (TD.sibsp == 5)
+
+TD.loc[Filter_4, :].head()
+```
+<br>
+<br>
 ## 3. 데이터 프레임 합치기
 
 > 여러가지 방법이 있는데 우리가 쉽게 생각하던 것 처럼은 아니다.

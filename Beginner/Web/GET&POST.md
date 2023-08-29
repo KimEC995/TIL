@@ -1,4 +1,4 @@
-## GET 방식과 POST 방식의 차이와 구분
+# GET 방식과 POST 방식의 차이와 구분
 
 HTTP 요청 메서드 GET 과 POST 가 자주 눈에 띈다.
 
